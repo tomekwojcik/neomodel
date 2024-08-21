@@ -38,6 +38,7 @@ from neomodel.exceptions import (
 )
 from neomodel.hooks import hooks
 from neomodel.properties import Property
+from neomodel.sync_.caching import TrackableLRUCache
 from neomodel.sync_.property_manager import PropertyManager
 from neomodel.util import (
     _UnsavedNode,
@@ -103,6 +104,9 @@ class Database(local):
         self._database_version = None
         self._database_edition = None
         self.impersonated_user = None
+        self.cache = TrackableLRUCache(
+            maxsize=config.CACHE_SIZE if hasattr(config, "CACHE_SIZE") else 10000
+        )
 
     def set_connection(self, url: str = None, driver: Driver = None):
         """

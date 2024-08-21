@@ -27,6 +27,7 @@ from neo4j.graph import Node, Path, Relationship
 
 from neomodel import config
 from neomodel._async_compat.util import AsyncUtil
+from neomodel.async_.caching import TrackableLRUCache
 from neomodel.async_.property_manager import AsyncPropertyManager
 from neomodel.exceptions import (
     ConstraintValidationFailed,
@@ -103,6 +104,9 @@ class AsyncDatabase(local):
         self._database_version = None
         self._database_edition = None
         self.impersonated_user = None
+        self.cache = TrackableLRUCache(
+            maxsize=config.CACHE_SIZE if hasattr(config, "CACHE_SIZE") else 10000
+        )
 
     async def set_connection(self, url: str = None, driver: AsyncDriver = None):
         """

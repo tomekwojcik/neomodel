@@ -17,6 +17,7 @@ MAX_TRANSACTION_RETRY_TIME = 30.0
 RESOLVER = None
 TRUSTED_CERTIFICATES = neo4j.TrustSystemCAs()
 USER_AGENT = f"neomodel/v{__version__}"
+CACHE_SIZE = 10000
 
 # Use this to connect with your self-managed driver instead
 # DRIVER = neo4j.GraphDatabase().driver(
